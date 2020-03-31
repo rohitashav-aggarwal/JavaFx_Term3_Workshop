@@ -2,7 +2,11 @@ package sample;
 import java.sql.*;
 
 public class DatabaseUtility {
-
+    /*
+     * @Author - Rohit Aggarwal
+     * @Database connection
+     * Javafx workshop 6
+     * */
     // connection to travel experts database
     public static Connection getConnectionString() {
         Connection conn = null;
@@ -18,12 +22,20 @@ public class DatabaseUtility {
         return conn;
     }
 
-    // executing query with travel exerts connection written above
+    /*
+     * @Author - Rohit Aggarwal
+     * @executing query with travel exerts connection written above
+     * Javafx workshop 6
+     * */
     public static ResultSet getResults(String query) {
         return getResults(query, getConnectionString());
     }
 
-    // executing query with overloaded method without connection (option to pass your connection
+    /*
+     * @Author - Rohit Aggarwal
+     * @executing query with overloaded method without connection (option to pass your connection
+     * Javafx workshop 6
+     * */
     public static ResultSet getResults(String query, Connection connection){
         ResultSet rSet = null;
         try {
@@ -37,7 +49,11 @@ public class DatabaseUtility {
         return rSet;
     }
 
-    // update (insert/update/delete) any database table
+    /*
+     * @Author - Rohit Aggarwal
+     * @update (insert/update/delete) any database table
+     * Javafx workshop 6
+     * */
     public static PreparedStatement updateDatabase(String query){
         Connection conn = getConnectionString();
         PreparedStatement stmt = null;

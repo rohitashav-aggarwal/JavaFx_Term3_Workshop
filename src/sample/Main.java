@@ -17,8 +17,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
+        /*
+         * @Author - Rohit Aggarwal
+         * @Remove scene window and adds custom window
+         * Javafx workshop 6
+         * */
         //undecorated or transparent.
         //primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.initStyle(StageStyle.UNDECORATED);

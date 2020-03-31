@@ -18,7 +18,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
+/*
+ * @Author - Rohit Aggarwal
+ * @Controller class (Table View for products)
+ * Javafx workshop 6
+ * */
 public class Controller implements Initializable {
 
     @FXML
@@ -54,6 +58,11 @@ public class Controller implements Initializable {
     @FXML
     private Button btnUpdateProduct;
 
+    /*
+     * @Author - Rohit Aggarwal
+     * @add new product
+     * Javafx workshop 6
+     * */
     @FXML
     void addproducts(MouseEvent event) {
         productsView.getItems().add(null);
@@ -66,7 +75,11 @@ public class Controller implements Initializable {
         );
     }
 
-
+    /*
+     * @Author - Rohit Aggarwal
+     * @Update products
+     * Javafx workshop 6
+     * */
     @FXML
     void updateProducts(MouseEvent event) {
 
@@ -90,12 +103,22 @@ public class Controller implements Initializable {
 
     }
 
+    /*
+     * @Author - Rohit Aggarwal
+     * @Load products table view
+     * Javafx workshop 6
+     * */
     @FXML
     void loadProducts(MouseEvent event) {
 
         populateTableForProducts();
     }
 
+    /*
+     * @Author - Rohit Aggarwal
+     * @load products table view
+     * Javafx workshop 6
+     * */
     private void populateTableForProducts() {
         ArrayList<Products> products = null;
 
@@ -124,7 +147,11 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-
+    /*
+     * @Author - Rohit Aggarwal
+     * @custom close button
+     * Javafx workshop 6
+     * */
     @FXML
     void closeWindow(MouseEvent event) {
         // getting a handle to the stage

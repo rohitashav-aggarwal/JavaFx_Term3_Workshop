@@ -1,3 +1,9 @@
+/*
+ * @Author - Rohit Aggarwal
+ * @Product class: Declare fields, constructors and getters and setters
+ * Javafx workshop 6
+ * */
+
 package sample;
 
 public class Products {
