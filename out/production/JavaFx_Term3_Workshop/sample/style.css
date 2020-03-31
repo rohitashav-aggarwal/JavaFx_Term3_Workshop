@@ -1,0 +1,44 @@
+.button{
+    -fx-background-color: #3f2863;
+}
+
+.button:pressed:hover {
+    -fx-background-color: #7B68EE;
+    -fx-scale-y: 0.9;
+    -fx-scale-x: 0.9;
+}
+
+.button:pressed {
+    -fx-background-color: #7B68EE;
+    -fx-scale-y: 0.9;
+    -fx-scale-x: 0.9;
+}
+
+.button:hover {
+    -fx-background-color: #7B68EE;
+    -fx-scale-y: 1.1;
+}
+
+#hbox{
+    -fx-background-color: #250C42;
+}
+
+#leftpanel{
+    -fx-background-color: #3f2863;
+}
+
+#header{
+    -fx-background-color: #7B68EE;
+}
+
+.table-view .column-header .label {
+    -fx-background-color: #7B68EE
+}
+
+.table-view .column-header {
+    -fx-background-color: #7B68EE
+}
+
+.table-view .header{
+    -fx-background-color: #7B68EE
+}

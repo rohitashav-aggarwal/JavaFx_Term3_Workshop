@@ -42,7 +42,9 @@ public class Main extends Application {
         });
 
         //primaryStage.setTitle("Travel Experts");
-        primaryStage.setScene(new Scene(root, 1151, 741));
+        Scene scene = new Scene(root, 1151, 741);
+        scene.getStylesheets().add("/sample/style.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

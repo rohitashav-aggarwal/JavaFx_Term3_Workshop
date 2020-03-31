@@ -92,6 +92,7 @@ public class Controller implements Initializable {
 
     @FXML
     void loadProducts(MouseEvent event) {
+
         populateTableForProducts();
     }
 
