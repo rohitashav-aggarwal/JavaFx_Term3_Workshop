@@ -41,16 +41,16 @@ public class Controller implements Initializable {
     private Button btnClose;
 
     @FXML
-    private Label lblTest;
+    private Label title;
 
     @FXML
-    private TableView<Products> productsView;
+    private TableView<Products> tableView;
 
     @FXML
-    private TableColumn productIdColumn;
+    private TableColumn columnOne;
 
     @FXML
-    private TableColumn productNameColumn;
+    private TableColumn columnTwo;
 
     @FXML
     private Button btnAddProduct;
@@ -65,12 +65,14 @@ public class Controller implements Initializable {
      * */
     @FXML
     void addproducts(MouseEvent event) {
-        productsView.getItems().add(null);
-        productNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        productNameColumn.setOnEditCommit(
+        columnTwo.setEditable(true);
+        tableView.getItems().add(null);
+        columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+        columnTwo.setOnEditCommit(
                 (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
                     ProductsDB.postInsertProducts(t.getNewValue());
                     populateTableForProducts();
+                    columnTwo.setEditable(false);
                 }
         );
     }
@@ -83,9 +85,9 @@ public class Controller implements Initializable {
     @FXML
     void updateProducts(MouseEvent event) {
 
-        productNameColumn.setEditable(true);
-        productNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        productNameColumn.setOnEditCommit(
+        columnTwo.setEditable(true);
+        columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+        columnTwo.setOnEditCommit(
                 (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
                     ((Products) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -97,10 +99,9 @@ public class Controller implements Initializable {
                     Products updatedProduct = new Products(products.getProductID(), t.getNewValue());
                     ProductsDB.postUpdateProducts(updatedProduct);
                     populateTableForProducts();
-                    productNameColumn.setEditable(false);
+                    columnTwo.setEditable(false);
                 }
         );
-
     }
 
     /*
@@ -110,7 +111,6 @@ public class Controller implements Initializable {
      * */
     @FXML
     void loadProducts(MouseEvent event) {
-
         populateTableForProducts();
     }
 
@@ -127,16 +127,16 @@ public class Controller implements Initializable {
 
             ObservableList<Products> oProducts = FXCollections.observableArrayList(products);
 
-            productIdColumn.setText("Product ID");
-            productNameColumn.setText("Product Name");
-            productsView.getColumns().setAll(productIdColumn, productNameColumn);
+            columnOne.setText("Product ID");
+            columnTwo.setText("Product Name");
+            tableView.getColumns().setAll(columnOne, columnTwo);
 
-            productIdColumn.setCellValueFactory(new PropertyValueFactory("productID"));
-            productNameColumn.setCellValueFactory(new PropertyValueFactory("productName"));
+            columnOne.setCellValueFactory(new PropertyValueFactory("productID"));
+            columnTwo.setCellValueFactory(new PropertyValueFactory("productName"));
 
-            productsView.setItems(oProducts);
+            tableView.setItems(oProducts);
 
-            lblTest.setText("Products");
+            title.setText("Products");
 
         } catch (SQLException e) {
             e.printStackTrace();

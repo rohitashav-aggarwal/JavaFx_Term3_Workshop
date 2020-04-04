@@ -84,15 +84,15 @@
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="productsView" editable="true" layoutX="29.0" layoutY="126.0" prefHeight="421.0" prefWidth="826.0" stylesheets="@style.css">
+                  <TableView fx:id="tableView" editable="true" layoutX="29.0" layoutY="126.0" prefHeight="421.0" prefWidth="826.0" stylesheets="@style.css">
                     <columns>
-                      <TableColumn fx:id="productIdColumn" minWidth="416.0" prefWidth="416.0" />
-                      <TableColumn fx:id="productNameColumn" minWidth="416.0" prefWidth="409.0" />
+                      <TableColumn fx:id="columnOne" minWidth="416.0" prefWidth="416.0" />
+                      <TableColumn fx:id="columnTwo" minWidth="416.0" prefWidth="409.0" />
                     </columns>
                   </TableView>
                   <HBox fx:id="header" layoutY="-1.0" prefHeight="74.0" prefWidth="876.0">
                      <children>
-                        <Label fx:id="lblTest" prefHeight="97.0" prefWidth="296.0" textFill="#fcfafa">
+                        <Label fx:id="title" prefHeight="97.0" prefWidth="296.0" textFill="#fcfafa">
                            <font>
                               <Font size="24.0" />
                            </font>
