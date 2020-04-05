@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,10 +54,12 @@ public class Controller implements Initializable {
     private TableColumn columnTwo;
 
     @FXML
-    private Button btnAddProduct;
+    private Button btnAdd;
 
     @FXML
-    private Button btnUpdateProduct;
+    private Button btnUpdate;
+
+    private SelectedView selectedView;
 
     /*
      * @Author - Rohit Aggarwal
@@ -65,16 +68,18 @@ public class Controller implements Initializable {
      * */
     @FXML
     void addproducts(MouseEvent event) {
-        columnTwo.setEditable(true);
-        tableView.getItems().add(null);
-        columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-        columnTwo.setOnEditCommit(
-                (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
-                    ProductsDB.postInsertProducts(t.getNewValue());
-                    populateTableForProducts();
-                    columnTwo.setEditable(false);
-                }
-        );
+        if (selectedView == SelectedView.Products) {
+            columnTwo.setEditable(true);
+            tableView.getItems().add(null);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+                        ProductsDB.postInsertProducts(t.getNewValue());
+                        populateTableForProducts();
+                        columnTwo.setEditable(false);
+                    }
+            );
+        }
     }
 
     /*
@@ -120,6 +125,7 @@ public class Controller implements Initializable {
      * Javafx workshop 6
      * */
     private void populateTableForProducts() {
+        selectedView = SelectedView.Products;
         ArrayList<Products> products = null;
 
         try {

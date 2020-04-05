@@ -105,8 +105,8 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Button fx:id="btnAddProduct" alignment="CENTER" layoutX="323.0" layoutY="559.0" mnemonicParsing="false" onMouseClicked="#addproducts" prefHeight="25.0" prefWidth="77.0" text="Add" textFill="#fcf9f9" />
-                  <Button fx:id="btnUpdateProduct" alignment="CENTER" layoutX="474.0" layoutY="559.0" mnemonicParsing="false" onMouseClicked="#updateProducts" prefHeight="25.0" prefWidth="77.0" text="Update" textFill="#f8f7f7" />
+                  <Button fx:id="btnAdd" alignment="CENTER" layoutX="323.0" layoutY="559.0" mnemonicParsing="false" onMouseClicked="#addproducts" prefHeight="25.0" prefWidth="77.0" text="Add" textFill="#fcf9f9" />
+                  <Button fx:id="btnUpdate" alignment="CENTER" layoutX="474.0" layoutY="559.0" mnemonicParsing="false" onMouseClicked="#updateProducts" prefHeight="25.0" prefWidth="77.0" text="Update" textFill="#f8f7f7" />
                </children>
             </Pane>
          </center>
