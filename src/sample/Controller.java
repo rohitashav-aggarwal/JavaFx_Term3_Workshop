@@ -45,13 +45,43 @@ public class Controller implements Initializable {
     private Label title;
 
     @FXML
-    private TableView<Products> tableView;
+    private TableView tableView;
 
     @FXML
     private TableColumn columnOne;
 
     @FXML
     private TableColumn columnTwo;
+
+    @FXML
+    private TableColumn columnThree;
+
+    @FXML
+    private TableColumn columnFour;
+
+    @FXML
+    private TableColumn columnFive;
+
+    @FXML
+    private TableColumn columnSix;
+
+    @FXML
+    private TableColumn columnSeven;
+
+    @FXML
+    private TableColumn columnEight;
+
+    @FXML
+    private TableColumn columnNine;
+
+    @FXML
+    private TableColumn columnTen;
+
+    @FXML
+    private TableColumn columnEleven;
+
+    @FXML
+    private TableColumn columnTwelve;
 
     @FXML
     private Button btnAdd;
@@ -80,6 +110,19 @@ public class Controller implements Initializable {
                     }
             );
         }
+        // Author: Steven Hillman
+        else if (selectedView == SelectedView.Customers) {
+            columnTwo.setEditable(true);
+            tableView.getItems().add(null);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+                        CustomerDB.insertCustomer(t.getNewValue());
+                        populateTableForCustomers();
+                        columnTwo.setEditable(false);
+                    }
+            );
+        }
     }
 
     /*
@@ -90,23 +133,88 @@ public class Controller implements Initializable {
     @FXML
     void updateProducts(MouseEvent event) {
 
-        columnTwo.setEditable(true);
-        columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-        columnTwo.setOnEditCommit(
-                (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
-                    ((Products) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow())
-                    ).setProductName(t.getNewValue());
-                    System.out.println(t.getNewValue());
+        if (selectedView == SelectedView.Products) {
+            columnTwo.setEditable(true);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+                        ((Products) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setProductName(t.getNewValue());
+                        System.out.println(t.getNewValue());
 
-                    Products products = t.getTableView().getItems().get(
-                            t.getTablePosition().getRow());
-                    Products updatedProduct = new Products(products.getProductID(), t.getNewValue());
-                    ProductsDB.postUpdateProducts(updatedProduct);
-                    populateTableForProducts();
-                    columnTwo.setEditable(false);
-                }
-        );
+                        Products products = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Products updatedProduct = new Products(products.getProductID(), t.getNewValue());
+                        ProductsDB.postUpdateProducts(updatedProduct);
+                        populateTableForProducts();
+                        columnTwo.setEditable(false);
+                    }
+            );
+        }
+        // Author: Steven Hillman
+        else if (selectedView == SelectedView.Customers) {
+            columnTwo.setEditable(true);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setCustFirstName(t.getNewValue());
+                        System.out.println(t.getNewValue());
+
+                        Customer currentCustomer = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), t.getNewValue(), currentCustomer.getCustLastName(), currentCustomer.getCustAddress(),
+                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
+                                 currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
+                        CustomerDB.updateCustomers(updatedCustomer);
+                        populateTableForCustomers();
+                        columnTwo.setEditable(false);
+                    }
+            );
+
+            columnThree.setEditable(true);
+            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnThree.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setCustFirstName(t.getNewValue());
+                        System.out.println(t.getNewValue());
+
+                        Customer currentCustomer = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), currentCustomer.getCustFirstName(), t.getNewValue(), currentCustomer.getCustAddress(),
+                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
+                                currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
+                        CustomerDB.updateCustomers(updatedCustomer);
+                        populateTableForCustomers();
+                        columnThree.setEditable(false);
+                    }
+            );
+
+            columnFour.setEditable(true);
+            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnFour.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setCustFirstName(t.getNewValue());
+                        System.out.println(t.getNewValue());
+
+                        Customer currentCustomer = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), currentCustomer.getCustFirstName(), currentCustomer.getCustLastName(), t.getNewValue(),
+                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
+                                currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
+                        CustomerDB.updateCustomers(updatedCustomer);
+                        populateTableForCustomers();
+                        columnThree.setEditable(false);
+                    }
+            );
+
+        }
     }
 
     /*
@@ -165,4 +273,61 @@ public class Controller implements Initializable {
         // shutting down the stage
         stage.close();
     }
+
+    // Author: Steven Hillman
+    // on btnCustomers mouse click, populate the table view
+    @FXML
+    void loadCustomers(MouseEvent event) {
+        populateTableForCustomers();
+    }
+
+    // Author: Steven Hillman
+    // get the observable list of Customer objects from the database using CustomerDB and populate the table view
+    private void populateTableForCustomers() {
+        selectedView = SelectedView.Customers;
+        ArrayList<Customer> customerList = null;
+
+        try {
+            customerList = CustomerDB.getCustomers();
+
+            ObservableList<Customer> oListCustomers = FXCollections.observableArrayList(customerList);
+
+            columnOne.setText("Customer ID");
+            columnTwo.setText("First Name");
+            columnThree.setText("Last Name");
+            columnFour.setText("Address");
+            columnFive.setText("City");
+            columnSix.setText("Province");
+            columnSeven.setText("Postal Code");
+            columnEight.setText("Country");
+            columnNine.setText("Home Phone");
+            columnTen.setText("Business Phone");
+            columnEleven.setText("Email");
+            columnTwelve.setText("Agent ID");
+
+            tableView.getColumns().setAll(columnOne, columnTwo, columnThree, columnFour, columnFive,
+                    columnSix, columnSeven, columnEight, columnNine, columnTen, columnEleven, columnTwelve);
+
+            columnOne.setCellValueFactory(new PropertyValueFactory("CustomerId"));
+            columnTwo.setCellValueFactory(new PropertyValueFactory("CustFirstName"));
+            columnThree.setCellValueFactory(new PropertyValueFactory("CustLastName"));
+            columnFour.setCellValueFactory(new PropertyValueFactory("CustAddress"));
+            columnFive.setCellValueFactory(new PropertyValueFactory("CustCity"));
+            columnSix.setCellValueFactory(new PropertyValueFactory("CustProv"));
+            columnSeven.setCellValueFactory(new PropertyValueFactory("CustPostal"));
+            columnEight.setCellValueFactory(new PropertyValueFactory("CustCountry"));
+            columnNine.setCellValueFactory(new PropertyValueFactory("CustHomePhone"));
+            columnTen.setCellValueFactory(new PropertyValueFactory("CustBusPhone"));
+            columnEleven.setCellValueFactory(new PropertyValueFactory("CustEmail"));
+            columnTwelve.setCellValueFactory(new PropertyValueFactory("AgentId"));
+
+            tableView.setItems(oListCustomers);
+
+            title.setText("Customers");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
