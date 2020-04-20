@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -97,7 +98,7 @@ public class Controller implements Initializable {
      * Javafx workshop 6
      * */
     @FXML
-    void addproducts(MouseEvent event) {
+    void clickAdd(MouseEvent event) {
         if (selectedView == SelectedView.Products) {
             columnTwo.setEditable(true);
             tableView.getItems().add(null);
@@ -131,7 +132,7 @@ public class Controller implements Initializable {
      * Javafx workshop 6
      * */
     @FXML
-    void updateProducts(MouseEvent event) {
+    void clickUpdate(MouseEvent event) {
 
         if (selectedView == SelectedView.Products) {
             columnTwo.setEditable(true);
@@ -211,6 +212,129 @@ public class Controller implements Initializable {
                         CustomerDB.updateCustomers(updatedCustomer);
                         populateTableForCustomers();
                         columnThree.setEditable(false);
+                    }
+            );
+
+        }
+        // Author: Elias Nahas
+        else if (selectedView == SelectedView.Bookings) {
+            columnTwo.setEditable(true);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setBookingDate(String.valueOf(t.getNewValue()));
+                        System.out.println(t.getNewValue());
+
+                        Booking currentBooking = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+                                String.valueOf(t.getNewValue()), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+                        BookingDB.updateBooking(updatedBooking);
+                        populateTableForBookings();
+                        columnTwo.setEditable(false);
+                    }
+            );
+
+            columnThree.setEditable(true);
+            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnThree.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setBookingNo(t.getNewValue());
+                        System.out.println(t.getNewValue());
+
+                        Booking currentBooking = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+                                currentBooking.getBookingDate(), t.getNewValue(), currentBooking.getTravelerCount(),
+                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+                        BookingDB.updateBooking(updatedBooking);
+                        populateTableForBookings();
+                        columnThree.setEditable(false);
+                    }
+            );
+
+            columnFour.setEditable(true);
+            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnFour.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setTravelerCount(Double.valueOf(t.getNewValue()));
+                        System.out.println(t.getNewValue());
+
+                        Booking currentBooking = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), Double.valueOf(t.getNewValue()),
+                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+                        BookingDB.updateBooking(updatedBooking);
+                        populateTableForBookings();
+                        columnFour.setEditable(false);
+                    }
+            );
+
+            columnFive.setEditable(true);
+            columnFive.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnFive.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setCustomerId(Integer.valueOf(t.getNewValue()));
+                        System.out.println(t.getNewValue());
+
+                        Booking currentBooking = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+                                Integer.valueOf(t.getNewValue()), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+                        BookingDB.updateBooking(updatedBooking);
+                        populateTableForBookings();
+                        columnFive.setEditable(false);
+                    }
+            );
+
+            columnSix.setEditable(true);
+            columnSix.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnSix.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setTripTypeId(t.getNewValue());
+                        System.out.println(t.getNewValue());
+
+                        Booking currentBooking = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+                                currentBooking.getCustomerId(), t.getNewValue(), currentBooking.getPackageId());
+                        BookingDB.updateBooking(updatedBooking);
+                        populateTableForBookings();
+                        columnSix.setEditable(false);
+                    }
+            );
+
+            columnSeven.setEditable(true);
+            columnSeven.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnSeven.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+                        (t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setPackageId(Integer.valueOf(t.getNewValue()));
+                        System.out.println(t.getNewValue());
+
+                        Booking currentBooking = t.getTableView().getItems().get(
+                                t.getTablePosition().getRow());
+                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), Integer.valueOf(t.getNewValue()));
+                        BookingDB.updateBooking(updatedBooking);
+                        populateTableForBookings();
+                        columnSeven.setEditable(false);
                     }
             );
 
@@ -324,6 +448,51 @@ public class Controller implements Initializable {
             tableView.setItems(oListCustomers);
 
             title.setText("Customers");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Author: Elias Nahas
+    // Populate table view when Bookings button is clicked
+    @FXML
+    void loadBookings(MouseEvent event) {
+        populateTableForBookings();
+    }
+
+    // Author: Elias Nahas
+    // Create and populate an ObservableList of Bookings from the database using BookingDB
+    private void populateTableForBookings() {
+        selectedView = SelectedView.Bookings;
+        ArrayList<Booking> bookingList = null;
+
+        try {
+            bookingList = BookingDB.getBookings();
+
+            ObservableList<Booking> oListBookings = FXCollections.observableArrayList(bookingList);
+
+            columnOne.setText("Booking ID");
+            columnTwo.setText("Booking Date");
+            columnThree.setText("Booking #");
+            columnFour.setText("Traveler Count");
+            columnFive.setText("Customer ID");
+            columnSix.setText("Trip Type ID");
+            columnSeven.setText("Package ID");
+
+            tableView.getColumns().setAll(columnOne, columnTwo, columnThree, columnFour, columnFive, columnSix, columnSeven);
+
+            columnOne.setCellValueFactory(new PropertyValueFactory("BookingId"));
+            columnTwo.setCellValueFactory(new PropertyValueFactory("BookingDate"));
+            columnThree.setCellValueFactory(new PropertyValueFactory("BookingNo"));
+            columnFour.setCellValueFactory(new PropertyValueFactory("TravelerCount"));
+            columnFive.setCellValueFactory(new PropertyValueFactory("CustomerId"));
+            columnSix.setCellValueFactory(new PropertyValueFactory("TripTypeId"));
+            columnSeven.setCellValueFactory(new PropertyValueFactory("PackageId"));
+
+            tableView.setItems(oListBookings);
+
+            title.setText("Bookings");
 
         } catch (SQLException e) {
             e.printStackTrace();
