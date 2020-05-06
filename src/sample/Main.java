@@ -18,8 +18,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        System.out.println("java version: "+System.getProperty("java.version"));
-        System.out.println("javafx.version: " + System.getProperty("javafx.version"));
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         /*

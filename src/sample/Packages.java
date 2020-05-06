@@ -1,20 +1,19 @@
 package sample;
 
-import java.sql.Date;
-
-
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 
 public class Packages {
     private int packageID;
     private String pkgName;
-    private Date pkgStartDate;
-    private Date pkgEndDate;
+    private Timestamp pkgStartDate;
+    private Timestamp pkgEndDate;
     private String pkgDesc;
-    private int pkgBasePrice;
-    private int pkgAgencyCom;
+    private BigDecimal pkgBasePrice;
+    private BigDecimal pkgAgencyCom;
 
-    public Packages(int packageID, String pkgName, Date pkgStartDate, Date pkgEndDate, String pkgDesc, int pkgBasePrice, int pkgAgencyCom) {
+    public Packages(int packageID, String pkgName, Timestamp pkgStartDate, Timestamp pkgEndDate, String pkgDesc, BigDecimal pkgBasePrice, BigDecimal pkgAgencyCom) {
         this.packageID = packageID;
         this.pkgName = pkgName;
         this.pkgStartDate = pkgStartDate;
@@ -22,6 +21,7 @@ public class Packages {
         this.pkgDesc = pkgDesc;
         this.pkgBasePrice = pkgBasePrice;
         this.pkgAgencyCom = pkgAgencyCom;
+
     }
 
     public int getPackageID() {
@@ -40,19 +40,19 @@ public class Packages {
         this.pkgName = pkgName;
     }
 
-    public Date getPkgStartDate() {
+    public Timestamp getPkgStartDate() {
         return pkgStartDate;
     }
 
-    public void setPkgStartDate(Date pkgStartDate) {
+    public void setPkgStartDate(Timestamp pkgStartDate) {
         this.pkgStartDate = pkgStartDate;
     }
 
-    public Date getPkgEndDate() {
+    public Timestamp getPkgEndDate() {
         return pkgEndDate;
     }
 
-    public void setPkgEndDate(Date pkgEndDate) {
+    public void setPkgEndDate(Timestamp pkgEndDate) {
         this.pkgEndDate = pkgEndDate;
     }
 
@@ -64,19 +64,19 @@ public class Packages {
         this.pkgDesc = pkgDesc;
     }
 
-    public int getPkgBasePrice() {
+    public BigDecimal getPkgBasePrice() {
         return pkgBasePrice;
     }
 
-    public void setPkgBasePrice(int pkgBasePrice) {
+    public void setPkgBasePrice(BigDecimal pkgBasePrice) {
         this.pkgBasePrice = pkgBasePrice;
     }
 
-    public int getPkgAgencyCom() {
+    public BigDecimal getPkgAgencyCom() {
         return pkgAgencyCom;
     }
 
-    public void setPkgAgencyCom(int pkgAgencyCom) {
+    public void setPkgAgencyCom(BigDecimal pkgAgencyCom) {
         this.pkgAgencyCom = pkgAgencyCom;
     }
 }

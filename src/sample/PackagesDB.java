@@ -6,11 +6,10 @@
 
 package sample;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Arrays;
 
 public class PackagesDB {
 
@@ -30,16 +29,19 @@ public class PackagesDB {
             Packages myPackage = new Packages(
                 (int)results.getObject(1),
                 (String)results.getObject(2),
-                (Date)results.getObject(3),
-                (Date)results.getObject(4),
+                (Timestamp) results.getObject(3),
+                (Timestamp)results.getObject(4),
                 (String)results.getObject(5),
-                (int)results.getObject(6),
-                (int)results.getObject(7));
+                (BigDecimal) results.getObject(6),
+                (BigDecimal)results.getObject(7));
+
             myPackages.add(myPackage);
         }
 
         // return the list
         return myPackages;
+
+
     }
 
     // Update products table
@@ -55,11 +57,11 @@ public class PackagesDB {
 
             // set the values to update
             statement.setString(1, myPackage.getPkgName());
-            statement.setDate(2, myPackage.getPkgStartDate());
-            statement.setDate(3, myPackage.getPkgEndDate());
+            statement.setTimestamp(2, myPackage.getPkgStartDate());
+            statement.setTimestamp(3, myPackage.getPkgEndDate());
             statement.setString(4, myPackage.getPkgDesc());
-            statement.setInt(5, myPackage.getPkgBasePrice());
-            statement.setInt(6, myPackage.getPkgAgencyCom());
+            statement.setBigDecimal(5, myPackage.getPkgBasePrice());
+            statement.setBigDecimal(6, myPackage.getPkgAgencyCom());
             statement.setInt(7, myPackage.getPackageID());
 
             // execute the update statement
@@ -70,9 +72,9 @@ public class PackagesDB {
         }
     }
 
-    // Insert new products
-    //STOPPPPPEDD HERE LASTTT
-    public static void postInsertProducts(String name, Date pkgStart, Date pkgEnd, String pkgDes, int){
+    // Insert new product
+    public static void InsertPackage(String pkgName, Timestamp pkgStart, Timestamp pkgEnd,
+                                     String pkgDes, BigDecimal pkgPrice, BigDecimal pkgAgencyCom){
         try{
             // sql query to insert data
             String query = "INSERT INTO packages (PkgName, PkgStartDate, PkgEndDate, PkgDesc, " +
@@ -83,7 +85,12 @@ public class PackagesDB {
             PreparedStatement statement = DatabaseUtility.updateDatabase(query);
 
             // set the values to insert
-            statement.setString(1, name);
+            statement.setString(1, pkgName);
+            statement.setTimestamp(2, pkgStart);
+            statement.setTimestamp(3, pkgEnd);
+            statement.setString(4, pkgDes);
+            statement.setBigDecimal(5, pkgPrice);
+            statement.setBigDecimal(6, pkgAgencyCom);
 
             // execute the update statement
             statement.executeUpdate();
@@ -92,4 +99,6 @@ public class PackagesDB {
             ex.printStackTrace();
         }
     }
+
+
 }
