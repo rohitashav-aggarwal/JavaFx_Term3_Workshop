@@ -118,6 +118,10 @@ public class Controller implements Initializable {
             viewName = "productView.fxml";
         else if (selectedView == SelectedView.Bookings)
             viewName = "bookingView.fxml";
+        else if (selectedView == SelectedView.Customers)
+            viewName = "customerView.fxml";
+        else if (selectedView == SelectedView.Vacation_Packages)
+            viewName = "packageView.fxml";
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(viewName));
             Parent root = fxmlLoader.load();
@@ -137,6 +141,12 @@ public class Controller implements Initializable {
         } else if (selectedView == SelectedView.Bookings) {
             Booking selectedBooking = (Booking) tableView.getSelectionModel().getSelectedItem();
             ID = selectedBooking.getBookingId();
+        } else if (selectedView == SelectedView.Customers) {
+            Customer selectCustomer = (Customer) tableView.getSelectionModel().getSelectedItem();
+            ID = selectCustomer.getCustomerId();
+        } else if (selectedView == SelectedView.Vacation_Packages) {
+            Package selectedPackage = (Package) tableView.getSelectionModel().getSelectedItem();
+            ID = selectedPackage.getPackageId();
         }
         System.out.println("Set ID to: " + ID);
     }
@@ -547,5 +557,49 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void loadPackages(MouseEvent event) {
+        populateTableForPackages();
+    }
+
+    // Author: Elias Nahas
+    // Create and populate an ObservableList of Bookings from the database using BookingDB
+    private void populateTableForPackages() {
+        selectedView = SelectedView.Vacation_Packages;
+        ArrayList<Package> packageList = null;
+
+        try {
+            packageList = PackageDB.getPackages();
+
+            ObservableList<Package> oListPackages = FXCollections.observableArrayList(packageList);
+
+            columnOne.setText("Package ID");
+            columnTwo.setText("Name");
+            columnThree.setText("Start Date");
+            columnFour.setText("End Date");
+            columnFive.setText("Description");
+            columnSix.setText("Base Price");
+            columnSeven.setText("Agency Commission");
+
+            tableView.getColumns().setAll(columnOne, columnTwo, columnThree, columnFour, columnFive, columnSix, columnSeven);
+
+            columnOne.setCellValueFactory(new PropertyValueFactory("PackageId"));
+            columnTwo.setCellValueFactory(new PropertyValueFactory("PkgName"));
+            columnThree.setCellValueFactory(new PropertyValueFactory("PkgStartDate"));
+            columnFour.setCellValueFactory(new PropertyValueFactory("PkgEndDate"));
+            columnFive.setCellValueFactory(new PropertyValueFactory("PkgDesc"));
+            columnSix.setCellValueFactory(new PropertyValueFactory("PkgBasePrice"));
+            columnSeven.setCellValueFactory(new PropertyValueFactory("PkgAgencyCommission"));
+
+            tableView.setItems(oListPackages);
+
+            title.setText("Packages");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

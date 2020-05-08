@@ -16,7 +16,7 @@ public class Customer {
     private String CustHomePhone;
     private String CustBusPhone;
     private String CustEmail;
-    private int AgentId;
+    private Integer AgentId;
 
     // getters and setters
     public int getCustomerId() {
@@ -107,18 +107,18 @@ public class Customer {
         CustEmail = custEmail;
     }
 
-    public int getAgentId() {
+    public Integer getAgentId() {
         return AgentId;
     }
 
-    public void setAgentId(int agentId) {
+    public void setAgentId(Integer agentId) {
         AgentId = agentId;
     }
 
     // constructors
     public Customer(int customerId, String custFirstName, String custLastName, String custAddress, String custCity,
                     String custProv, String custPostal, String custCountry, String custHomePhone,
-                    String custBusPhone, String custEmail, int agentId) {
+                    String custBusPhone, String custEmail, Integer agentId) {
         CustomerId = customerId;
         CustFirstName = custFirstName;
         CustLastName = custLastName;
@@ -136,6 +136,10 @@ public class Customer {
     public Customer(int customerId, String custFirstName) {
         CustomerId = customerId;
         CustFirstName = custFirstName;
+    }
+
+    public Customer() {
+
     }
 
     //methods
