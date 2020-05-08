@@ -17,6 +17,7 @@ public class Customer {
     private String CustBusPhone;
     private String CustEmail;
     private int AgentId;
+    private int UserId;
 
     // getters and setters
     public int getCustomerId() {
@@ -113,6 +114,14 @@ public class Customer {
 
     public void setAgentId(int agentId) {
         AgentId = agentId;
+    }
+
+    public int getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(int userId) {
+        UserId = userId;
     }
 
     // constructors

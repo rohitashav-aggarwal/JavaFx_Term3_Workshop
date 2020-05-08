@@ -152,7 +152,7 @@ public class Controller implements Initializable {
                     }
             );
         }
-        // Author: Steven Hillman
+        // Author: Steven Hillman - Customers
         else if (selectedView == SelectedView.Customers) {
             columnTwo.setEditable(true);
             columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
