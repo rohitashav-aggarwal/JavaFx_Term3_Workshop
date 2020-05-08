@@ -2,23 +2,25 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 
 /*
  * @Author - Rohit Aggarwal
@@ -26,6 +28,7 @@ import java.util.ResourceBundle;
  * Javafx workshop 6
  * */
 public class Controller implements Initializable {
+    public static Integer ID;
 
     @FXML
     private Button btnCustomers;
@@ -98,248 +101,284 @@ public class Controller implements Initializable {
      * Javafx workshop 6
      * */
     @FXML
-    void clickAdd(MouseEvent event) {
-        if (selectedView == SelectedView.Products) {
-            columnTwo.setEditable(true);
-            tableView.getItems().add(null);
-            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnTwo.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
-                        ProductsDB.postInsertProducts(t.getNewValue());
-                        populateTableForProducts();
-                        columnTwo.setEditable(false);
-                    }
-            );
-        }
-        // Author: Steven Hillman
-        else if (selectedView == SelectedView.Customers) {
-            columnTwo.setEditable(true);
-            tableView.getItems().add(null);
-            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnTwo.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
-                        CustomerDB.insertCustomer(t.getNewValue());
-                        populateTableForCustomers();
-                        columnTwo.setEditable(false);
-                    }
-            );
+    void clickAdd(MouseEvent event) throws IOException {
+        ID = null;
+        launchPopup();
+    }
+
+    @FXML
+    void clickUpdate(MouseEvent event) {
+        setId();
+        launchPopup();
+    }
+
+    void launchPopup() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    void setId() {
+        Booking selectedBooking = (Booking) tableView.getSelectionModel().getSelectedItem();
+        ID = selectedBooking.getBookingId();
+        System.out.println("Set ID to: " + ID);
+    }
+
+    public static Integer getId() {
+        Integer id = ID;
+        System.out.println("The id is: " + id);
+        return id;
+    }
+
+//    void clickAdd(MouseEvent event) {
+//        if (selectedView == SelectedView.Products) {
+//            columnTwo.setEditable(true);
+//            tableView.getItems().add(null);
+//            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnTwo.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+//                        ProductsDB.postInsertProducts(t.getNewValue());
+//                        populateTableForProducts();
+//                        columnTwo.setEditable(false);
+//                    }
+//            );
+//        }
+//        // Author: Steven Hillman
+//        else if (selectedView == SelectedView.Customers) {
+//            columnTwo.setEditable(true);
+//            tableView.getItems().add(null);
+//            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnTwo.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+//                        CustomerDB.insertCustomer(t.getNewValue());
+//                        populateTableForCustomers();
+//                        columnTwo.setEditable(false);
+//                    }
+//            );
+//        }
+//    }
 
     /*
      * @Author - Rohit Aggarwal
      * @Update products
      * Javafx workshop 6
      * */
-    @FXML
-    void clickUpdate(MouseEvent event) {
-
-        if (selectedView == SelectedView.Products) {
-            columnTwo.setEditable(true);
-            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnTwo.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
-                        ((Products) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setProductName(t.getNewValue());
-                        System.out.println(t.getNewValue());
-
-                        Products products = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Products updatedProduct = new Products(products.getProductID(), t.getNewValue());
-                        ProductsDB.postUpdateProducts(updatedProduct);
-                        populateTableForProducts();
-                        columnTwo.setEditable(false);
-                    }
-            );
-        }
-        // Author: Steven Hillman
-        else if (selectedView == SelectedView.Customers) {
-            columnTwo.setEditable(true);
-            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnTwo.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCustFirstName(t.getNewValue());
-                        System.out.println(t.getNewValue());
-
-                        Customer currentCustomer = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), t.getNewValue(), currentCustomer.getCustLastName(), currentCustomer.getCustAddress(),
-                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
-                                 currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
-                        CustomerDB.updateCustomers(updatedCustomer);
-                        populateTableForCustomers();
-                        columnTwo.setEditable(false);
-                    }
-            );
-
-            columnThree.setEditable(true);
-            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnThree.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCustFirstName(t.getNewValue());
-                        System.out.println(t.getNewValue());
-
-                        Customer currentCustomer = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), currentCustomer.getCustFirstName(), t.getNewValue(), currentCustomer.getCustAddress(),
-                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
-                                currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
-                        CustomerDB.updateCustomers(updatedCustomer);
-                        populateTableForCustomers();
-                        columnThree.setEditable(false);
-                    }
-            );
-
-            columnFour.setEditable(true);
-            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnFour.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCustFirstName(t.getNewValue());
-                        System.out.println(t.getNewValue());
-
-                        Customer currentCustomer = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), currentCustomer.getCustFirstName(), currentCustomer.getCustLastName(), t.getNewValue(),
-                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
-                                currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
-                        CustomerDB.updateCustomers(updatedCustomer);
-                        populateTableForCustomers();
-                        columnThree.setEditable(false);
-                    }
-            );
-
-        }
-        // Author: Elias Nahas
-        else if (selectedView == SelectedView.Bookings) {
-            columnTwo.setEditable(true);
-            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnTwo.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setBookingDate(String.valueOf(t.getNewValue()));
-                        System.out.println(t.getNewValue());
-
-                        Booking currentBooking = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
-                                String.valueOf(t.getNewValue()), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
-                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
-                        BookingDB.updateBooking(updatedBooking);
-                        populateTableForBookings();
-                        columnTwo.setEditable(false);
-                    }
-            );
-
-            columnThree.setEditable(true);
-            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnThree.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setBookingNo(t.getNewValue());
-                        System.out.println(t.getNewValue());
-
-                        Booking currentBooking = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
-                                currentBooking.getBookingDate(), t.getNewValue(), currentBooking.getTravelerCount(),
-                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
-                        BookingDB.updateBooking(updatedBooking);
-                        populateTableForBookings();
-                        columnThree.setEditable(false);
-                    }
-            );
-
-            columnFour.setEditable(true);
-            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnFour.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setTravelerCount(Double.valueOf(t.getNewValue()));
-                        System.out.println(t.getNewValue());
-
-                        Booking currentBooking = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
-                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), Double.valueOf(t.getNewValue()),
-                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
-                        BookingDB.updateBooking(updatedBooking);
-                        populateTableForBookings();
-                        columnFour.setEditable(false);
-                    }
-            );
-
-            columnFive.setEditable(true);
-            columnFive.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnFive.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCustomerId(Integer.valueOf(t.getNewValue()));
-                        System.out.println(t.getNewValue());
-
-                        Booking currentBooking = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
-                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
-                                Integer.valueOf(t.getNewValue()), currentBooking.getTripTypeId(), currentBooking.getPackageId());
-                        BookingDB.updateBooking(updatedBooking);
-                        populateTableForBookings();
-                        columnFive.setEditable(false);
-                    }
-            );
-
-            columnSix.setEditable(true);
-            columnSix.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnSix.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setTripTypeId(t.getNewValue());
-                        System.out.println(t.getNewValue());
-
-                        Booking currentBooking = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
-                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
-                                currentBooking.getCustomerId(), t.getNewValue(), currentBooking.getPackageId());
-                        BookingDB.updateBooking(updatedBooking);
-                        populateTableForBookings();
-                        columnSix.setEditable(false);
-                    }
-            );
-
-            columnSeven.setEditable(true);
-            columnSeven.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnSeven.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setPackageId(Integer.valueOf(t.getNewValue()));
-                        System.out.println(t.getNewValue());
-
-                        Booking currentBooking = t.getTableView().getItems().get(
-                                t.getTablePosition().getRow());
-                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
-                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
-                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), Integer.valueOf(t.getNewValue()));
-                        BookingDB.updateBooking(updatedBooking);
-                        populateTableForBookings();
-                        columnSeven.setEditable(false);
-                    }
-            );
-
-        }
-    }
+//    @FXML
+//    void clickUpdate(MouseEvent event) {
+//
+//        if (selectedView == SelectedView.Products) {
+//            columnTwo.setEditable(true);
+//            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnTwo.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+//                        ((Products) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setProductName(t.getNewValue());
+//                        System.out.println(t.getNewValue());
+//
+//                        Products products = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Products updatedProduct = new Products(products.getProductID(), t.getNewValue());
+//                        ProductsDB.postUpdateProducts(updatedProduct);
+//                        populateTableForProducts();
+//                        columnTwo.setEditable(false);
+//                    }
+//            );
+//        }
+//        // Author: Steven Hillman
+//        else if (selectedView == SelectedView.Customers) {
+//            columnTwo.setEditable(true);
+//            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnTwo.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCustFirstName(t.getNewValue());
+//                        System.out.println(t.getNewValue());
+//
+//                        Customer currentCustomer = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), t.getNewValue(), currentCustomer.getCustLastName(), currentCustomer.getCustAddress(),
+//                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
+//                                 currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
+//                        CustomerDB.updateCustomers(updatedCustomer);
+//                        populateTableForCustomers();
+//                        columnTwo.setEditable(false);
+//                    }
+//            );
+//
+//            columnThree.setEditable(true);
+//            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnThree.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCustFirstName(t.getNewValue());
+//                        System.out.println(t.getNewValue());
+//
+//                        Customer currentCustomer = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), currentCustomer.getCustFirstName(), t.getNewValue(), currentCustomer.getCustAddress(),
+//                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
+//                                currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
+//                        CustomerDB.updateCustomers(updatedCustomer);
+//                        populateTableForCustomers();
+//                        columnThree.setEditable(false);
+//                    }
+//            );
+//
+//            columnFour.setEditable(true);
+//            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnFour.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Customer, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCustFirstName(t.getNewValue());
+//                        System.out.println(t.getNewValue());
+//
+//                        Customer currentCustomer = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Customer updatedCustomer = new Customer(currentCustomer.getCustomerId(), currentCustomer.getCustFirstName(), currentCustomer.getCustLastName(), t.getNewValue(),
+//                                currentCustomer.getCustCity(), currentCustomer.getCustProv(), currentCustomer.getCustPostal(), currentCustomer.getCustCountry(),
+//                                currentCustomer.getCustHomePhone(), currentCustomer.getCustBusPhone(), currentCustomer.getCustEmail(), currentCustomer.getAgentId());
+//                        CustomerDB.updateCustomers(updatedCustomer);
+//                        populateTableForCustomers();
+//                        columnThree.setEditable(false);
+//                    }
+//            );
+//
+//        }
+//        // Author: Elias Nahas
+//        else if (selectedView == SelectedView.Bookings) {
+//            columnTwo.setEditable(true);
+//            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnTwo.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setBookingDate(String.valueOf(t.getNewValue()));
+//                        System.out.println(t.getNewValue());
+//
+//                        Booking currentBooking = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+//                                String.valueOf(t.getNewValue()), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+//                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+//                        BookingDB.updateBooking(updatedBooking);
+//                        populateTableForBookings();
+//                        columnTwo.setEditable(false);
+//                    }
+//            );
+//
+//            columnThree.setEditable(true);
+//            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnThree.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setBookingNo(t.getNewValue());
+//                        System.out.println(t.getNewValue());
+//
+//                        Booking currentBooking = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+//                                currentBooking.getBookingDate(), t.getNewValue(), currentBooking.getTravelerCount(),
+//                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+//                        BookingDB.updateBooking(updatedBooking);
+//                        populateTableForBookings();
+//                        columnThree.setEditable(false);
+//                    }
+//            );
+//
+//            columnFour.setEditable(true);
+//            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnFour.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setTravelerCount(Double.valueOf(t.getNewValue()));
+//                        System.out.println(t.getNewValue());
+//
+//                        Booking currentBooking = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+//                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), Double.valueOf(t.getNewValue()),
+//                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+//                        BookingDB.updateBooking(updatedBooking);
+//                        populateTableForBookings();
+//                        columnFour.setEditable(false);
+//                    }
+//            );
+//
+//            columnFive.setEditable(true);
+//            columnFive.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnFive.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCustomerId(Integer.valueOf(t.getNewValue()));
+//                        System.out.println(t.getNewValue());
+//
+//                        Booking currentBooking = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+//                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+//                                Integer.valueOf(t.getNewValue()), currentBooking.getTripTypeId(), currentBooking.getPackageId());
+//                        BookingDB.updateBooking(updatedBooking);
+//                        populateTableForBookings();
+//                        columnFive.setEditable(false);
+//                    }
+//            );
+//
+//            columnSix.setEditable(true);
+//            columnSix.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnSix.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setTripTypeId(t.getNewValue());
+//                        System.out.println(t.getNewValue());
+//
+//                        Booking currentBooking = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+//                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+//                                currentBooking.getCustomerId(), t.getNewValue(), currentBooking.getPackageId());
+//                        BookingDB.updateBooking(updatedBooking);
+//                        populateTableForBookings();
+//                        columnSix.setEditable(false);
+//                    }
+//            );
+//
+//            columnSeven.setEditable(true);
+//            columnSeven.setCellFactory(TextFieldTableCell.forTableColumn());
+//            columnSeven.setOnEditCommit(
+//                    (EventHandler<TableColumn.CellEditEvent<Booking, String>>) t -> {
+//                        (t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setPackageId(Integer.valueOf(t.getNewValue()));
+//                        System.out.println(t.getNewValue());
+//
+//                        Booking currentBooking = t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow());
+//                        Booking updatedBooking = new Booking(currentBooking.getBookingId(),
+//                                currentBooking.getBookingDate(), currentBooking.getBookingNo(), currentBooking.getTravelerCount(),
+//                                currentBooking.getCustomerId(), currentBooking.getTripTypeId(), Integer.valueOf(t.getNewValue()));
+//                        BookingDB.updateBooking(updatedBooking);
+//                        populateTableForBookings();
+//                        columnSeven.setEditable(false);
+//                    }
+//            );
+//
+//        }
+//    }
 
     /*
      * @Author - Rohit Aggarwal

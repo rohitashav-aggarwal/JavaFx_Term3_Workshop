@@ -36,11 +36,33 @@ public class BookingDB {
         return bookingList;
     }
 
+    public static Booking getBooking(int id) throws SQLException {
+        Booking booking = new Booking();
+
+        String query = "Select * from Bookings where BookingId = " + id;
+
+        // Initialize ResultSet
+        ResultSet results = DatabaseUtility.getResults(query);
+
+        // Recursively create Booking objects and add them to the bookingList array
+        while(results.next()) {
+            booking = new Booking(
+                    (int)results.getObject(1),
+                    String.valueOf((Timestamp)results.getObject(2)),
+                    (String)results.getObject(3),
+                    (Double)results.getObject(4),
+                    (Integer)results.getObject(5),
+                    (String)results.getObject(6),
+                    (Integer)results.getObject(7));
+        }
+        return booking;
+    }
+
     public static void updateBooking(Booking booking){
         try{
             // SQL query to update bookings table
             String query = "UPDATE bookings SET BookingDate = ?, BookingNo = ?, TravelerCount = ?, CustomerID = ?, " +
-                    "TripTypeId = ?, PackageId = ?";
+                    "TripTypeId = ?, PackageId = ? WHERE BookingId = ?";
 
             // Create a prepared statement
             PreparedStatement statement = DatabaseUtility.updateDatabase(query);
@@ -52,6 +74,10 @@ public class BookingDB {
             statement.setString(4, String.valueOf(booking.getCustomerId()));
             statement.setString(5, booking.getTripTypeId());
             statement.setString(6, String.valueOf(booking.getPackageId()));
+            if (booking.getPackageId() != null)
+                statement.setString(7, String.valueOf(booking.getBookingId()));
+            else
+                statement.setString(7, "");
 
             // Execute update statement
             statement.executeUpdate();
@@ -64,9 +90,15 @@ public class BookingDB {
     public static void insertBooking(Booking booking){
         try{
             // SQL query to insert booking into bookings table
-            String query = "INSERT INTO bookings (BookingDate, BookingNo, TravelerCount, CustomerID, TripTypeId, " +
-                    "PackageId) VALUES (?,?,?,?,?,?)";
-
+            String query;
+            if (booking.getPackageId()!= null) {
+                query = "INSERT INTO bookings (BookingDate, BookingNo, TravelerCount, CustomerID, TripTypeId, " +
+                        "PackageId) VALUES (?,?,?,?,?,?)";
+            }
+            else {
+                query = "INSERT INTO bookings (BookingDate, BookingNo, TravelerCount, CustomerID, TripTypeId) " +
+                        "VALUES (?,?,?,?,?)";
+            }
             // Create a prepared statement
             PreparedStatement statement = DatabaseUtility.updateDatabase(query);
 
@@ -76,7 +108,8 @@ public class BookingDB {
             statement.setString(3, String.valueOf(booking.getTravelerCount()));
             statement.setString(4, String.valueOf(booking.getCustomerId()));
             statement.setString(5, booking.getTripTypeId());
-            statement.setString(6, String.valueOf(booking.getPackageId()));
+            if (booking.getPackageId() != null)
+                statement.setString(6, String.valueOf(booking.getPackageId()));
 
             // Execute update statement
             statement.executeUpdate();

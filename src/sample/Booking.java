@@ -81,4 +81,7 @@ public class Booking {
         TripTypeId = tripTypeId;
         PackageId = packageId;
     }
+
+    public Booking() {
+    }
 }
