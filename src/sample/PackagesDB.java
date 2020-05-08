@@ -1,8 +1,4 @@
-/*
- * @Author - Rohit Aggarwal
- * @products data access class
- * Javafx workshop 6
- * */
+// Author - Jared Bellamy
 
 package sample;
 
@@ -13,18 +9,18 @@ import java.util.Arrays;
 
 public class PackagesDB {
 
-    // retrieve products table data
+    // retrieve Packages into table data
     public static ArrayList<Packages> getPackages() throws SQLException {
-        // declare an empty list
+        // make empty list
         ArrayList<Packages> myPackages = new ArrayList<>();
 
-        // SQL query
+        // sql query
         String query = "SELECT * FROM packages";
 
-        // execute Query using DatabaseUtility class
+        // execute query using DatabaseUtility 
         ResultSet results = DatabaseUtility.getResults(query);
 
-        // store results in the empty list
+        // store results in empty list
         while(results.next()){
             Packages myPackage = new Packages(
                 (int)results.getObject(1),
@@ -38,21 +34,21 @@ public class PackagesDB {
             myPackages.add(myPackage);
         }
 
-        // return the list
+        // return populated list
         return myPackages;
 
 
     }
 
-    // Update products table
+    // update packages table
     public static void UpdatePackages(Packages myPackage){
         try{
-            // sql query to update table
+            // sql query for updating table
             String query = "UPDATE packages SET PkgName = ?, PkgStartDate = ?, " +
                     "PkgEndDate = ?, PkgDesc = ?, PkgBasePrice = ?, PkgAgencyCommission = ? " +
                     "WHERE PackageId = ?;";
 
-            // create prepared statement
+            // prepared statement
             PreparedStatement statement = DatabaseUtility.updateDatabase(query);
 
             // set the values to update
@@ -72,18 +68,18 @@ public class PackagesDB {
         }
     }
 
-    // Insert new product
+    // insert new packages
     public static void InsertPackage(String pkgName){
         try{
-            // sql query to insert data
+            // sql query to insert packages
             String query = "INSERT INTO packages (PkgName, PkgStartDate, PkgEndDate, PkgDesc, " +
                     "PkgBasePrice, PkgAgencyCommission) " +
                     "VALUES (?, ?, ?, ?, ?, ?);";
 
-            //create prepared statement
+            
             PreparedStatement statement = DatabaseUtility.updateDatabase(query);
 
-            // set the values to insert
+            
             statement.setString(1, pkgName);
             statement.setString(2, pkgName);
             statement.setString(3, pkgName);
@@ -91,7 +87,7 @@ public class PackagesDB {
             statement.setString(5, pkgName);
             statement.setString(6, pkgName);
 
-            // execute the update statement
+            
             statement.executeUpdate();
         }
         catch (NullPointerException | SQLException ex){

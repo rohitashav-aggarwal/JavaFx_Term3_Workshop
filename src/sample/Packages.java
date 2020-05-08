@@ -1,3 +1,4 @@
+// Author - Jared Bellamy
 package sample;
 
 import java.math.BigDecimal;
@@ -5,6 +6,7 @@ import java.sql.Timestamp;
 
 
 public class Packages {
+    //gobal variables to create or edit packages
     private int packageID;
     private String pkgName;
     private Timestamp pkgStartDate;
@@ -13,6 +15,7 @@ public class Packages {
     private BigDecimal pkgBasePrice;
     private BigDecimal pkgAgencyCom;
 
+// Method for building a full package
     public Packages(int packageID, String pkgName, Timestamp pkgStartDate, Timestamp pkgEndDate, String pkgDesc, BigDecimal pkgBasePrice, BigDecimal pkgAgencyCom) {
         this.packageID = packageID;
         this.pkgName = pkgName;
@@ -23,6 +26,8 @@ public class Packages {
         this.pkgAgencyCom = pkgAgencyCom;
 
     }
+
+//GETTERS AND SETTERS
 
     public int getPackageID() {
         return packageID;

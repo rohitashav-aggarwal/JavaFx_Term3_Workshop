@@ -125,6 +125,7 @@ public class Controller implements Initializable {
                     }
             );
         }
+        //Author - Jared Bellamy
         else if (selectedView == SelectedView.Vacation_Packages) {
             columnTwo.setEditable(true);
             tableView.getItems().add(null);
