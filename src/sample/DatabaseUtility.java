@@ -12,7 +12,7 @@ public class DatabaseUtility {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3308/travelexperts",
+                    "jdbc:mysql://localhost:3306/travelexperts",
                     "root", "");
             System.out.println("********Database connection established.********");
         } catch (SQLException e) {
