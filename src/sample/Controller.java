@@ -113,8 +113,13 @@ public class Controller implements Initializable {
     }
 
     void launchPopup() {
+        String viewName = new String();
+        if (selectedView == SelectedView.Products)
+            viewName = "productView.fxml";
+        else if (selectedView == SelectedView.Bookings)
+            viewName = "bookingView.fxml";
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(viewName));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -126,8 +131,13 @@ public class Controller implements Initializable {
     }
 
     void setId() {
-        Booking selectedBooking = (Booking) tableView.getSelectionModel().getSelectedItem();
-        ID = selectedBooking.getBookingId();
+        if (selectedView == SelectedView.Products) {
+            Products selectedProduct = (Products) tableView.getSelectionModel().getSelectedItem();
+            ID = selectedProduct.getProductID();
+        } else if (selectedView == SelectedView.Bookings) {
+            Booking selectedBooking = (Booking) tableView.getSelectionModel().getSelectedItem();
+            ID = selectedBooking.getBookingId();
+        }
         System.out.println("Set ID to: " + ID);
     }
 

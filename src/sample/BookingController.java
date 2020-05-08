@@ -66,7 +66,6 @@ public class BookingController {
 
     @FXML
     void clickSave(MouseEvent event) {
-        System.out.println(dpBookingDate.getValue().toString());
         Booking bk = new Booking();
         bk.setBookingDate(dpBookingDate.getValue().toString());
         bk.setBookingNo(tfBookingNo.getText());
@@ -87,7 +86,6 @@ public class BookingController {
     @FXML
     void initialize() throws SQLException {
         id = Controller.getId();
-        System.out.println("The fetched id is: " + id);
 
         setCbCustomerId();
         setCbTripTypeId();

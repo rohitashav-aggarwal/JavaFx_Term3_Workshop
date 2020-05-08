@@ -5,9 +5,9 @@
  * */
 
 package sample;
-import java.awt.*;
-import java.sql.*;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProductsDB {
@@ -33,6 +33,27 @@ public class ProductsDB {
 
         // return the list
         return products;
+    }
+
+    public static Products getProduct(Integer id) throws SQLException {
+        // declare an empty list
+        Products product = new Products();
+
+        // SQL query
+        String query = "SELECT * FROM products where ProductId = " + id;
+
+        // execute Query using DatabaseUtility class
+        ResultSet results = DatabaseUtility.getResults(query);
+
+        // store results in the empty list
+        while(results.next()){
+            product= new Products(
+                    (int)results.getObject(1),
+                    (String)results.getObject(2));
+        }
+
+        // return the list
+        return product;
     }
 
     // Update products table
