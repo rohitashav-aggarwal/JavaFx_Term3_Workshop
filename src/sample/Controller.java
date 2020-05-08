@@ -14,6 +14,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -129,7 +130,7 @@ public class Controller implements Initializable {
             tableView.getItems().add(null);
             columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
             columnTwo.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Products, Object>>) t -> {
+                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
                         PackagesDB.InsertPackage(t.getNewValue());
                         populateTableForPackages();
                         columnTwo.setEditable(false);
@@ -242,60 +243,15 @@ public class Controller implements Initializable {
                     }
             );
 
-            columnThree.setEditable(true);
-            columnThree.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnThree.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
-                    {
-                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgName(t.getNewValue());
-                        PassingUpdatePackage(t);
-                        columnThree.setEditable(false);
-                    }
-            );
-
-            columnFour.setEditable(true);
-            columnFour.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnFour.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
-                    {
-                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgName(t.getNewValue());
-                        PassingUpdatePackage(t);
-                        columnFour.setEditable(false);
-                    }
-            );
 
             columnFive.setEditable(true);
             columnFive.setCellFactory(TextFieldTableCell.forTableColumn());
             columnFive.setOnEditCommit(
                     (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
                     {
-                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgName(t.getNewValue());
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgDesc(t.getNewValue());
                         PassingUpdatePackage(t);
                         columnFive.setEditable(false);
-                    }
-            );
-
-            columnSix.setEditable(true);
-            columnSix.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnSix.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
-                    {
-                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgName(t.getNewValue());
-
-                        PassingUpdatePackage(t);
-                        columnSix.setEditable(false);
-                    }
-            );
-
-            columnSeven.setEditable(true);
-            columnSeven.setCellFactory(TextFieldTableCell.forTableColumn());
-            columnSeven.setOnEditCommit(
-                    (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
-                    {
-                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgName(t.getNewValue());
-
-                        PassingUpdatePackage(t);
-                        columnSeven.setEditable(false);
                     }
             );
 

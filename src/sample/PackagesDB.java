@@ -73,8 +73,7 @@ public class PackagesDB {
     }
 
     // Insert new product
-    public static void InsertPackage(String pkgName, Timestamp pkgStart, Timestamp pkgEnd,
-                                     String pkgDes, BigDecimal pkgPrice, BigDecimal pkgAgencyCom){
+    public static void InsertPackage(String pkgName){
         try{
             // sql query to insert data
             String query = "INSERT INTO packages (PkgName, PkgStartDate, PkgEndDate, PkgDesc, " +
@@ -86,11 +85,11 @@ public class PackagesDB {
 
             // set the values to insert
             statement.setString(1, pkgName);
-            statement.setTimestamp(2, pkgStart);
-            statement.setTimestamp(3, pkgEnd);
-            statement.setString(4, pkgDes);
-            statement.setBigDecimal(5, pkgPrice);
-            statement.setBigDecimal(6, pkgAgencyCom);
+            statement.setString(2, pkgName);
+            statement.setString(3, pkgName);
+            statement.setString(4, pkgName);
+            statement.setString(5, pkgName);
+            statement.setString(6, pkgName);
 
             // execute the update statement
             statement.executeUpdate();
