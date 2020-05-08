@@ -14,8 +14,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -123,6 +125,19 @@ public class Controller implements Initializable {
                     }
             );
         }
+        //Author - Jared Bellamy
+        else if (selectedView == SelectedView.Vacation_Packages) {
+            columnTwo.setEditable(true);
+            tableView.getItems().add(null);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Products, String>>) t -> {
+                        PackagesDB.InsertPackage(t.getNewValue());
+                        populateTableForPackages();
+                        columnTwo.setEditable(false);
+                    }
+            );
+        }
     }
 
     /*
@@ -215,6 +230,42 @@ public class Controller implements Initializable {
             );
 
         }
+
+        // Author: Jared Bellamy
+        else if (selectedView == SelectedView.Vacation_Packages) {
+            columnTwo.setEditable(true);
+            columnTwo.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnTwo.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
+                    {
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgName(t.getNewValue());
+                        PassingUpdatePackage(t);
+                        columnTwo.setEditable(false);
+                    }
+            );
+
+
+            columnFive.setEditable(true);
+            columnFive.setCellFactory(TextFieldTableCell.forTableColumn());
+            columnFive.setOnEditCommit(
+                    (EventHandler<TableColumn.CellEditEvent<Packages, String>>) t ->
+                    {
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPkgDesc(t.getNewValue());
+                        PassingUpdatePackage(t);
+                        columnFive.setEditable(false);
+                    }
+            );
+
+        }
+    }
+
+    private void PassingUpdatePackage(TableColumn.CellEditEvent<Packages, String> t) {
+        Packages currentPackage = t.getTableView().getItems().get(
+                t.getTablePosition().getRow());
+        Packages updatedPackage = new Packages(currentPackage.getPackageID(), currentPackage.getPkgName(), currentPackage.getPkgStartDate(),
+                currentPackage.getPkgEndDate(), currentPackage.getPkgDesc(), currentPackage.getPkgBasePrice(), currentPackage.getPkgAgencyCom());
+        PackagesDB.UpdatePackages(updatedPackage);
+        populateTableForPackages();
     }
 
     /*
@@ -272,6 +323,54 @@ public class Controller implements Initializable {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         // shutting down the stage
         stage.close();
+    }
+
+    // Author: Jared Bellamy
+    // on btnPackages mouse click, populate the table view
+    @FXML
+    void loadPackages(MouseEvent event) {
+        populateTableForPackages();
+    }
+
+    // Author: Jared Bellamy
+    // get the observable list of Packages from database using PackagesDB
+    private void populateTableForPackages() {
+        selectedView = SelectedView.Vacation_Packages;
+        ArrayList<Packages> myPackageList = null;
+
+        try {
+            myPackageList = PackagesDB.getPackages();
+
+            ObservableList<Packages> listOfPackages = FXCollections.observableArrayList(myPackageList);
+
+            columnOne.setText("ID");
+            columnTwo.setText("Name");
+            columnThree.setText("Start Date");
+            columnFour.setText("End Date");
+            columnFive.setText("Description");
+            columnSix.setText("Base Price");
+            columnSeven.setText("Agency Commission");
+
+
+            tableView.getColumns().setAll(columnOne, columnTwo, columnThree, columnFour, columnFive,
+                    columnSix, columnSeven);
+
+            columnOne.setCellValueFactory(new PropertyValueFactory("packageID"));
+            columnTwo.setCellValueFactory(new PropertyValueFactory("PkgName"));
+            columnThree.setCellValueFactory(new PropertyValueFactory("PkgStartDate"));
+            columnFour.setCellValueFactory(new PropertyValueFactory("PkgEndDate"));
+            columnFive.setCellValueFactory(new PropertyValueFactory("PkgDesc"));
+            columnSix.setCellValueFactory(new PropertyValueFactory("PkgBasePrice"));
+            columnSeven.setCellValueFactory(new PropertyValueFactory("pkgAgencyCom"));
+
+
+            tableView.setItems(listOfPackages);
+
+            title.setText("Vacation Packages");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Author: Steven Hillman

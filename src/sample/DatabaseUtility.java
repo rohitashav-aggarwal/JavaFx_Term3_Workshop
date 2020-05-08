@@ -12,8 +12,8 @@ public class DatabaseUtility {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3308/travelexperts",
-                    "root", "");
+                    "jdbc:mysql://localhost:3306/travelexperts",
+                    "root", "test");
             System.out.println("********Database connection established.********");
         } catch (SQLException e) {
             e.printStackTrace();

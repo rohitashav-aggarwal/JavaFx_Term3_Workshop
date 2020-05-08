@@ -36,7 +36,7 @@
                         <Insets left="50.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="btnPackages" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="74.0" prefWidth="277.0" text="Vacation Packages" textFill="#f8f7f7">
+                  <Button fx:id="btnPackages" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#loadPackages" prefHeight="74.0" prefWidth="277.0" text="Vacation Packages" textFill="#f8f7f7">
                      <font>
                         <Font size="18.0" />
                      </font>
